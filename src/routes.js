@@ -74,7 +74,7 @@ export default class Routes {
         meta: [
           {
             name: 'author',
-            content: 'Yash Thakur',
+            content: 'Ankush Tiwari',
           },
           {
             name: 'description',
