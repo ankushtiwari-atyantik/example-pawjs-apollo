@@ -3,20 +3,31 @@
  */
 import React from 'react';
 import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { withApollo } from 'react-apollo';
 
 
-class Home extends React.Component {
+class Home extends React.Component {static propTypes = {
+  client: PropTypes.shape({}),
+  loadedData: PropTypes.shape({}),
+};
+
+  static defaultProps = {
+    client: {},
+    loadedData: {},
+  };
+
   constructor(props) {
     super(props);
-    const {data} = props.loadedData || {};
+    const { data } = props.loadedData || {};
 
     this.state = {
       fromValue: 1,
       updatingRates: false,
       currencyData: props.loadedData,
       conversionFrom: 'USD',
-      conversionTo: 'EUR'
+      conversionTo: 'EUR',
     };
 
     if (data && data.rates) {
@@ -31,9 +42,9 @@ class Home extends React.Component {
   updateRates(e) {
     if (e && e.preventDefault) e.preventDefault();
 
-    const {client} = this.props;
+    const { client } = this.props;
     this.setState({
-      updatingRates: true
+      updatingRates: true,
     });
     client
       .query({
@@ -44,22 +55,24 @@ class Home extends React.Component {
               rate
             }
           }
-        `
-      }).then(updatedRates => {
-      this.setState({
-        updatingRates: false,
-        currencyData: updatedRates
+        `,
+      }).then((updatedRates) => {
+        this.setState({
+          updatingRates: false,
+          currencyData: updatedRates,
+        });
+      }).catch(() => {
+        this.setState({
+          updatingRates: false,
+        });
       });
-    }).catch(() => {
-      this.setState({
-        updatingRates: false
-      });
-    });
   }
 
   render() {
-    const {loading, error, data} = this.state.currencyData;
-    const {conversionFrom, conversionTo, fromValue, updatingRates} = this.state;
+    const {
+      conversionFrom, conversionTo, fromValue, updatingRates, currencyData,
+    } = this.state;
+    const { loading, error, data } = currencyData;
 
     return (
       <div>
@@ -78,31 +91,31 @@ class Home extends React.Component {
             && (
               <select
                 value={conversionFrom}
-                onChange={e => {
+                onChange={(e) => {
                   this.updateRates(e);
                   this.setState({
-                    conversionFrom: e.target.value
-                  })
+                    conversionFrom: e.target.value,
+                  });
                 }}
               >
-                {data.rates.map(({currency, rate}) => (
+                {data.rates.map(({ currency }) => (
                   <option
                     key={`from_${currency}`}
                     value={currency}
                   >
                     {currency}
                   </option>
-                ))}}
+                ))}
               </select>
             )
           }
           <input
             value={fromValue}
             type="number"
-            onChange={e => {
+            onChange={(e) => {
               if (e && e.preventDefault) e.preventDefault();
               this.setState({
-                fromValue: e.target.value
+                fromValue: e.target.value,
               });
             }}
           />
@@ -117,34 +130,37 @@ class Home extends React.Component {
             && (
               <select
                 value={conversionTo}
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    conversionTo: e.target.value
-                  })
+                    conversionTo: e.target.value,
+                  });
                 }}
               >
-                {data.rates.map(({currency, rate}) => (
+                {data.rates.map(({ currency }) => (
                   <option
                     key={`from_${currency}`}
                     value={currency}
                   >
                     {currency}
                   </option>
-                ))}}
+                ))}
               </select>
             )
           }
 
           <input
-            value={fromValue * (data.rates.find(record => record.currency.toUpperCase() === conversionTo.toUpperCase()).rate || 1)}
+            value={
+              fromValue * (data.rates.find(
+                record => record.currency.toUpperCase() === conversionTo.toUpperCase(),
+              ).rate || 1)}
             readOnly
           />
         </div>
 
         <div>
-          <a href='/rates'>
+          <Link to="/rates">
             View rate list
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -152,4 +168,3 @@ class Home extends React.Component {
 }
 
 export default withApollo(Home);
-

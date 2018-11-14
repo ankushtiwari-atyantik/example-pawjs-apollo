@@ -3,17 +3,29 @@
  */
 import React from 'react';
 import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { withApollo } from 'react-apollo';
 
 class Rates extends React.Component {
+  static propTypes = {
+    client: PropTypes.shape({}),
+    loadedData: PropTypes.shape({}),
+  };
+
+  static defaultProps = {
+    client: {},
+    loadedData: {},
+  };
+
   constructor(props) {
     super(props);
-    const {data} = props.loadedData || {};
+    const { data } = props.loadedData || {};
 
     this.state = {
       updatingRates: false,
       currencyData: props.loadedData,
-      conversionFrom: 'USD'
+      conversionFrom: 'EUR',
     };
 
     if (data && data.rates) {
@@ -28,9 +40,9 @@ class Rates extends React.Component {
   updateRates(e) {
     if (e && e.preventDefault) e.preventDefault();
 
-    const {client} = this.props;
+    const { client } = this.props;
     this.setState({
-      updatingRates: true
+      updatingRates: true,
     });
     client
       .query({
@@ -41,22 +53,22 @@ class Rates extends React.Component {
               rate
             }
           }
-        `
-      }).then(updatedRates => {
-      this.setState({
-        updatingRates: false,
-        currencyData: updatedRates
+        `,
+      }).then((updatedRates) => {
+        this.setState({
+          updatingRates: false,
+          currencyData: updatedRates,
+        });
+      }).catch(() => {
+        this.setState({
+          updatingRates: false,
+        });
       });
-    }).catch(() => {
-      this.setState({
-        updatingRates: false
-      });
-    });
   }
 
   render() {
-    const {loading, error, data} = this.state.currencyData;
-    const {conversionFrom, updatingRates} = this.state;
+    const { conversionFrom, updatingRates, currencyData } = this.state;
+    const { loading, error, data } = currencyData;
 
     return (
       <div>
@@ -75,36 +87,36 @@ class Rates extends React.Component {
             && (
               <select
                 value={conversionFrom}
-                onChange={e => {
+                onChange={(e) => {
                   this.updateRates(e);
                   this.setState({
-                    conversionFrom: e.target.value
-                  })
+                    conversionFrom: e.target.value,
+                  });
                 }}
               >
-                {data.rates.map(({currency, rate}) => (
+                {data.rates.map(({ currency }) => (
                   <option
                     key={`from_${currency}`}
                     value={currency}
                   >
                     {currency}
                   </option>
-                ))}}
+                ))}
               </select>
             )
           }
         </div>
 
-        {data && data.rates && data.rates.map(({currency, rate}) => (
+        {data && data.rates && data.rates.map(({ currency, rate }) => (
           <div key={currency}>
             <p>{`${currency}: ${rate}`}</p>
           </div>
         ))}
 
         <div>
-          <a href='/'>
+          <Link to="/">
             Currency converter
-          </a>
+          </Link>
         </div>
 
       </div>

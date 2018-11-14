@@ -9,7 +9,7 @@ import ShareImg384 from './resources/img/icon-384x384.png';
 import ShareImg512 from './resources/img/icon-512x512.png';
 
 export default class Routes {
-  apply(routeHandler) {
+  apply = (routeHandler) => {
     const routes = [
       ...HomeRoute,
     ];
@@ -103,7 +103,7 @@ export default class Routes {
           {
             name: 'apple-mobile-web-app-title',
             content: 'ReactPWA | Apollo',
-          }
+          },
         ],
       });
     });
