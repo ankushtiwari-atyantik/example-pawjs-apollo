@@ -1,4 +1,4 @@
-import ClientInstance from "../apollo-client";
+import React from 'react';
 import gql from "graphql-tag";
 
 export default [
@@ -6,15 +6,39 @@ export default [
     path: '/',
     exact: true,
     component: import('../app/components/home'),
-    loadData: () => ClientInstance.query({
-      query: gql`
-      {
-        books {
-          title
-          author
-        }
-      }
-    `
-    })
+    loadData: (params) => {
+      return params.client
+        .query({
+          query: gql`
+          {
+           rates(currency: "USD") {
+              currency
+              rate
+            }
+          }
+        `
+        })
+    }
   },
+  {
+    path: '/rates',
+    exact: true,
+    component: import('../app/components/rates'),
+    loadData: (params) => {
+      if (params.client) {
+        return params.client
+          .query({
+            query: gql`
+            {
+             rates(currency: "USD") {
+                currency
+                rate
+              }
+            }
+          `
+          })
+      }
+      return null;
+    },
+  }
 ];

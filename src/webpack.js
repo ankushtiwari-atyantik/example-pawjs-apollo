@@ -1,3 +1,5 @@
+import path from 'path';
+
 export default class ProjectWebpack {
   apply(webpackHandler) {
     webpackHandler.hooks.beforeConfig.tap('mjsSolver', (env, type, config) => {
@@ -8,14 +10,14 @@ export default class ProjectWebpack {
           conf = [config];
         }
         conf.forEach((c) => {
-          const moduleRules = c.module.rules;
-          moduleRules.push({
-            test: /\.mjs$/,
-            include: /node_modules/,
-            type: "javascript/auto",
-          });
-          return moduleRules;
-
+          c.resolve = c.resolve ? JSON.parse(JSON.stringify(c.resolve)) : {};
+          if (type === "server") {
+            c.resolve.mainFields = ['main', 'module'];
+            c.resolve.extensions = ['.js', '.wasm', '.mjs', '.json'];
+          } else if (type === "web" ){
+            c.resolve.mainFields = ['browser', 'main', 'module'];
+            c.resolve.extensions = ['.js', '.wasm', '.mjs', '.json'];
+          }
         });
       } catch (ex) {
         // eslint-disable-next-line

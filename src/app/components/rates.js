@@ -5,18 +5,15 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { withApollo } from 'react-apollo';
 
-
-class Home extends React.Component {
+class Rates extends React.Component {
   constructor(props) {
     super(props);
     const {data} = props.loadedData || {};
 
     this.state = {
-      fromValue: 1,
       updatingRates: false,
       currencyData: props.loadedData,
-      conversionFrom: 'USD',
-      conversionTo: 'EUR'
+      conversionFrom: 'USD'
     };
 
     if (data && data.rates) {
@@ -59,11 +56,11 @@ class Home extends React.Component {
 
   render() {
     const {loading, error, data} = this.state.currencyData;
-    const {conversionFrom, conversionTo, fromValue, updatingRates} = this.state;
+    const {conversionFrom, updatingRates} = this.state;
 
     return (
       <div>
-        <h2>Currency converter</h2>
+        <h2>Currency rates</h2>
 
         {(loading || updatingRates) && <p>Loading...</p>}
         {(error) && <p>Error :(</p>}
@@ -96,60 +93,23 @@ class Home extends React.Component {
               </select>
             )
           }
-          <input
-            value={fromValue}
-            type="number"
-            onChange={e => {
-              if (e && e.preventDefault) e.preventDefault();
-              this.setState({
-                fromValue: e.target.value
-              });
-            }}
-          />
         </div>
 
-        <div>
-          <label>
-            To currency:
-          </label>
-          {
-            data && data.rates
-            && (
-              <select
-                value={conversionTo}
-                onChange={e => {
-                  this.setState({
-                    conversionTo: e.target.value
-                  })
-                }}
-              >
-                {data.rates.map(({currency, rate}) => (
-                  <option
-                    key={`from_${currency}`}
-                    value={currency}
-                  >
-                    {currency}
-                  </option>
-                ))}}
-              </select>
-            )
-          }
-
-          <input
-            value={fromValue * (data.rates.find(record => record.currency.toUpperCase() === conversionTo.toUpperCase()).rate || 1)}
-            readOnly
-          />
-        </div>
+        {data && data.rates && data.rates.map(({currency, rate}) => (
+          <div key={currency}>
+            <p>{`${currency}: ${rate}`}</p>
+          </div>
+        ))}
 
         <div>
-          <a href='/rates'>
-            View rate list
+          <a href='/'>
+            Currency converter
           </a>
         </div>
+
       </div>
     );
   }
 }
 
-export default withApollo(Home);
-
+export default withApollo(Rates);
