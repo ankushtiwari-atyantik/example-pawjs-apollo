@@ -7,6 +7,7 @@ import ShareImg152 from './resources/img/icon-152x152.png';
 import ShareImg192 from './resources/img/icon-192x192.png';
 import ShareImg384 from './resources/img/icon-384x384.png';
 import ShareImg512 from './resources/img/icon-512x512.png';
+import SocialShareImg from './resources/img/Social-Share-Image.png';
 
 export default class Routes {
   apply = (routeHandler) => {
@@ -17,8 +18,8 @@ export default class Routes {
     routeHandler.hooks.initRoutes.tapPromise('AppRoutes', async () => {
       routeHandler.addRoutes(routes);
       routeHandler.setPwaSchema({
-        name: 'ReactPWA | Apollo',
-        short_name: 'RPWAA',
+        name: 'ReactPWA | PawJS-Apollo',
+        short_name: 'P-Apollo',
         dir: 'ltr',
         lang: 'en-US',
         orientation: 'any',
@@ -70,7 +71,7 @@ export default class Routes {
         type: 'website',
         url: 'https://www.reactpwa.com/examples/Apollo',
         site_name: 'ReactPWA',
-        image: ShareImg512,
+        image: SocialShareImg,
         meta: [
           {
             name: 'author',

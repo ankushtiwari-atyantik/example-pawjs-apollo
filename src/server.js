@@ -8,6 +8,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 // eslint-disable-next-line
 import fetch from 'universal-fetch';
 
+import FavIcon from './resources/img/favicon.ico';
+
 
 export default class Server {
   apply = (serverHandler) => {
@@ -53,6 +55,7 @@ export default class Server {
     });
 
     serverHandler.hooks.beforeHtmlRender.tap('AddInitialApolloState', (app, req, res) => {
+
       if (res.locals.apolloClient && res.locals.apolloClient.extract) {
         app.htmlProps.head.push(
           <script
@@ -61,6 +64,8 @@ export default class Server {
               __html: `window.__APOLLO_STATE__=${JSON.stringify(res.locals.apolloClient.extract()).replace(/</g, '\\u003c')};`,
             }}
           />,
+          <link key="favicon" rel="shortcut icon" type="image/x-icon" href={FavIcon} />,
+          <script key="addGoogleAnalytics" async src="https://www.google-analytics.com/analytics.js" />,
         );
       }
     });

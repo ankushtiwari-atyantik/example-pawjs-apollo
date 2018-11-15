@@ -132,7 +132,7 @@ class Rates extends React.Component {
             ))}
           </div>
 
-          <div className={styles.mt}>
+          <div className={styles['d-inline-flex']}>
             <a
               href="https://github.com/Atyantik/example-pawjs-apollo.git"
               className={classNames(styles.mt, styles.btn, styles.black)}
@@ -148,7 +148,7 @@ class Rates extends React.Component {
             <div className={styles.col8}>
               <div className={styles.p2}>
                 <div>
-                  This is an example project of implementing Redux with&nbsp;
+                  This is an example project of implementing React Apollo with&nbsp;
                   <a
                     href="https://www.reactpwa.com"
                     target="_blank"

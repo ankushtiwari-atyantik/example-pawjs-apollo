@@ -100,6 +100,9 @@ select, input {
 label {
     font-size: 22px;
 }
+.d-inline-flex {
+    display: inline-flex;
+}
 @media (max-width: 575px) {
     .col6 {
         width: 100%;

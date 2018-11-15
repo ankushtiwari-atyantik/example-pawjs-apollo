@@ -186,7 +186,7 @@ class Home extends React.Component {static propTypes = {
             <div className={styles.col8}>
               <div className={styles.p2}>
                 <div>
-                  This is an example project of implementing Redux with&nbsp;
+                  This is an example project of implementing React Apollo with&nbsp;
                   <a
                     href="https://www.reactpwa.com"
                     target="_blank"
