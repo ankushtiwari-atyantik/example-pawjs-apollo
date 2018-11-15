@@ -8,6 +8,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 // eslint-disable-next-line
 import fetch from 'universal-fetch';
 
+
 export default class Server {
   apply = (serverHandler) => {
     serverHandler
