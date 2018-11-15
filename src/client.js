@@ -1,4 +1,5 @@
 import React from 'react';
+import './resources/css/styles.scss';
 import { ApolloLink } from 'apollo-link';
 import { onError } from 'apollo-link-error';
 import { HttpLink } from 'apollo-link-http';

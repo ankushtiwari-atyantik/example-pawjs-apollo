@@ -42,6 +42,12 @@ body {
     /*margin-top: 2rem;*/
     /*border-top: 1px solid #000;*/
 }
+.mh500 {
+    max-width: 500px;
+    margin: 0 auto;
+    /*margin-top: 2rem;*/
+    /*border-top: 1px solid #000;*/
+}
 border-top {
     border-top: 1px solid #000;
 }
@@ -103,6 +109,9 @@ label {
 .d-inline-flex {
     display: inline-flex;
 }
+.d-none {
+    display: none;
+}
 @media (max-width: 575px) {
     .col6 {
         width: 100%;
@@ -124,5 +133,8 @@ label {
     }
     .title {
         text-align: center;
+    }
+    .d-md-none {
+        display: none;
     }
 }
